@@ -15,9 +15,8 @@ Visit [Beep Boop](https://beepboophq.com/docs/article/overview) to get the scoop
 ### Run locally
 Install dependencies ([virtualenv](http://virtualenv.readthedocs.org/en/latest/) is recommended.)
 
-  `pip install -r requirements.txt`
-
-	`export SLACK_TOKEN=<YOUR SLACK TOKEN>; python rtmbot.py`
+  pip install -r requirements.txt
+  export SLACK_TOKEN=<YOUR SLACK TOKEN>; python rtmbot.py
 
 Things are looking good if the console prints something like:
 
