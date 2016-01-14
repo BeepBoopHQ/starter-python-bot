@@ -17,7 +17,7 @@ from slackclient import SlackClient
 
 def dbg(debug_string):
     if debug:
-        logging.info(debug_string)
+        logging.debug(debug_string)
 
 class RtmBot(object):
     def __init__(self, token):
@@ -29,10 +29,10 @@ class RtmBot(object):
         """Convenience method that creates Server instance"""
         self.slack_client = SlackClient(self.token)
         self.slack_client.rtm_connect()
-        print "Connected {} to {} team at https://{}.slack.com".format(
+        logging.info("Connected {} to {} team at https://{}.slack.com".format(
             self.slack_client.server.username,
             self.slack_client.server.login_data['team']['name'],
-            self.slack_client.server.domain)
+            self.slack_client.server.domain))
     def start(self):
         self.connect()
         self.load_plugins()
@@ -110,7 +110,7 @@ class Plugin(object):
         if 'crontable' in dir(self.module):
             for interval, function in self.module.crontable:
                 self.jobs.append(Job(interval, eval("self.module."+function)))
-            logging.info(self.module.crontable)
+            logging.debug("crontable: {}".format(self.module.crontable))
             self.module.crontable = []
         else:
             self.module.crontable = []
@@ -137,7 +137,7 @@ class Plugin(object):
         while True:
             if 'outputs' in dir(self.module):
                 if len(self.module.outputs) > 0:
-                    logging.info("output from {}".format(self.module))
+                    logging.debug("output from {}".format(self.module))
                     output.append(self.module.outputs.pop(0))
                 else:
                     break
@@ -189,9 +189,12 @@ if __name__ == "__main__":
                                 directory
                                 ))
 
-    debug = os.getenv("DEBUG", "False")
-    if debug == "True":
-        logging.basicConfig(level=logging.DEBUG)
+    log_level = os.getenv("LOG_LEVEL", "DEBUG")
+    logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=log_level)
+    debug = False
+    if log_level == "DEBUG":
+        debug = True
+
     slack_token = os.getenv("SLACK_TOKEN", "")
     logging.info("token: {}".format(slack_token))
     if slack_token == "":
