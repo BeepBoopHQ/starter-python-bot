@@ -15,14 +15,14 @@ Visit [Beep Boop](https://beepboophq.com/docs/article/overview) to get the scoop
 ### Run locally
 Install dependencies ([virtualenv](http://virtualenv.readthedocs.org/en/latest/) is recommended.)
 
-  pip install -r requirements.txt
+	pip install -r requirements.txt
 	export SLACK_TOKEN=<YOUR SLACK TOKEN>; python rtmbot.py
 
 Things are looking good if the console prints something like:
 
 	Connected <your bot name> to <your slack team> team at https://<your slack team>.slack.com.
 
-If you want additional logging and debugging info, prepend `export DEBUG=True; ` to the `python rtmbot.py` command.
+If you want change the logging level, prepend `export LOG_LEVEL=<your level>; ` to the `python rtmbot.py` command.
 
 ### Run locally in Docker
 	docker build -t starter-python-bot .

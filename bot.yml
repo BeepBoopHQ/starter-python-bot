@@ -3,10 +3,10 @@ description: A simple Python bot sample for Beep Boop
 avatar: images/avatar.png
 background: images/background.png
 config:
-  - name: OPTION
-    friendly_name: Some Unnecessary Option
-    info: This is an unnecessary option
-    default: the default value
+  - name: LOG_LEVEL
+    friendly_name: Severity level to show for logging.
+    info: See https://docs.python.org/2/library/logging.html#levels
+    default: DEBUG
   - name: SECRET
     friendly_name: Shhhh
     info: This is an secret option
