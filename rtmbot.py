@@ -29,7 +29,7 @@ class RtmBot(object):
         """Convenience method that creates Server instance"""
         self.slack_client = SlackClient(self.token)
         self.slack_client.rtm_connect()
-        logging.info("Connected {} to {} team at https://{}.slack.com".format(
+        logging.info(u"Connected {} to {} team at https://{}.slack.com".format(
             self.slack_client.server.username,
             self.slack_client.server.login_data['team']['name'],
             self.slack_client.server.domain))
