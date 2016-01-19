@@ -1,7 +1,7 @@
 name: Beepboop Starterbot
 description: A simple Python bot sample for Beep Boop
-avatar: images/avatar.png
-background: images/background.png
+avatar: resources/avatar.png
+background: resources/background.png
 config:
   - name: LOG_LEVEL
     friendly_name: Severity level to show for logging.
@@ -13,4 +13,4 @@ config:
     type: secret
     default: not secret though
 screenshots:
-  - screenshot: images/screenshot1.png
+  - screenshot: resources/screenshot1.png
