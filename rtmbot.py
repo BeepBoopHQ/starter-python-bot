@@ -56,14 +56,16 @@ class RtmBot(object):
         else:
             return False
     def input(self, data):
-        if "type" in data:
-            function_name = "process_" + data["type"]
-            dbg("got {}".format(function_name))
-            if "text" in data and self.isBotMention(data["text"]):
-                function_name = "process_mention"
-            for plugin in self.bot_plugins:
-                plugin.register_jobs()
-                plugin.do(function_name, data)
+        # Make sure we're not responding to ourselves
+        if "user" in data and data['user'] != self.slack_client.server.login_data['self']['id']:
+            if "type" in data:
+                function_name = "process_" + data["type"]
+                dbg("got {}".format(function_name))
+                if "text" in data and self.isBotMention(data["text"]):
+                    function_name = "process_mention"
+                for plugin in self.bot_plugins:
+                    plugin.register_jobs()
+                    plugin.do(function_name, data)
     def output(self):
         for plugin in self.bot_plugins:
             limiter = False
@@ -76,12 +78,26 @@ class RtmBot(object):
                     message = output[1].encode('ascii','ignore')
                     if message.startswith("__typing__"):
                         user_typing_json = { "type": "typing", "channel": channel.id}
-                        print user_typing_json
+                        logging.debug(user_typing_json)
                         self.slack_client.server.send_to_websocket(user_typing_json)
                         time.sleep(output[2])
                     else:
                         channel.send_message("{}".format(message))
                         limiter = True
+            for attachment in plugin.do_attachment():
+                channel = self.slack_client.server.channels.find(attachment[0])
+                if channel != None and attachment[1] != None:
+                    attachments = []
+                    if attachment != None and attachment[2] != None:
+                        attachments.append(attachment[2])
+                    attachments_json = json.dumps(attachments)
+                    resp = self.slack_client.api_call("chat.postMessage",
+                        text="{}".format(attachment[1]),
+                        channel="{}".format(channel.id),
+                        as_user="true",
+                        attachments=attachments_json,
+                    )
+                    logging.debug(resp)
     def crons(self):
         for plugin in self.bot_plugins:
             plugin.do_jobs()
@@ -144,6 +160,18 @@ class Plugin(object):
             else:
                 self.module.outputs = []
         return output
+    def do_attachment(self):
+        attachment = []
+        while True:
+            if 'attachments' in dir(self.module):
+                if len(self.module.attachments) > 0:
+                    logging.debug("attachments from {}".format(self.module))
+                    attachment.append(self.module.attachments.pop(0))
+                else:
+                    break
+            else:
+                self.module.attachments = []
+        return attachment
 
 class Job(object):
     def __init__(self, interval, function):
