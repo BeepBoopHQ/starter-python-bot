@@ -31,6 +31,11 @@ If you want change the logging level, prepend `export LOG_LEVEL=<your level>; ` 
 ### Run in BeepBoop
 If you have linked your local repo with the Beep Boop service (check [here](https://beepboophq.com/0_o/my-projects)), changes pushed to the remote master branch will automatically deploy.
 
+## Customizing the Bot
+If you are looking to change what the bot responds to and how they respond, take a look at the `plugins/starter.py` file.  You'll see a function that gets called on all "message" type events, which has various regular expression matches that determine when the bot responds and how it responds.  Each "Plugin" is registered with the RtmBot on startup by scanning the "plugins/" directory and communicates back to the RtmBot through variables like output[] and attachments[].
+
+For more information on the Plugins pattern see the sections "Add Plugins" and "Create Plugins" at: https://github.com/slackhq/python-rtmbot/blob/master/README.md
+
 ## Acknowledgements
 
 This code was forked from https://github.com/slackhq/python-rtmbot and utilizes the awesome https://github.com/slackhq/python-slackclient project by [@rawdigits](https://github.com/rawdigits).  Please see https://github.com/slackhq/python-rtmbot/blob/master/README.md for
