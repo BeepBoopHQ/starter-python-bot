@@ -9,6 +9,10 @@ from event_handler import RtmEventHandler
 logger = logging.getLogger(__name__)
 
 
+def spawn_bot():
+    return SlackBot()
+
+
 class SlackBot(object):
     def __init__(self, token=None):
         """Creates Slacker Web and RTM clients with API Bot User token.
@@ -29,8 +33,9 @@ class SlackBot(object):
         Args:
             resource (dict of Resource JSON): See payload here - http://linktoresourcejson
         """
-        if 'SlackBotAccessToken' in resource:
-            res_access_token = resource['SlackBotAccessToken']
+        logger.debug('Starting bot for resource: {}'.format(resource))
+        if 'resource' in resource and 'SlackBotAccessToken' in resource['resource']:
+            res_access_token = resource['resource']['SlackBotAccessToken']
             self.clients = SlackClients(res_access_token)
 
         if self.clients.rtm.rtm_connect():
