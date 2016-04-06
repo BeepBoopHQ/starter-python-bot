@@ -31,7 +31,7 @@ class SlackBot(object):
         and listens for RTM events.
 
         Args:
-            resource (dict of Resource JSON): See payload here - http://linktoresourcejson
+            resource (dict of Resource JSON): See message payloads - https://beepboophq.com/docs/article/resourcer-api
         """
         logger.debug('Starting bot for resource: {}'.format(resource))
         if 'resource' in resource and 'SlackBotAccessToken' in resource['resource']:
@@ -75,6 +75,6 @@ class SlackBot(object):
         close connections if possible.
 
         Args:
-            resource (dict of Resource JSON): See payload here - http://linktoresourcejson
+            resource (dict of Resource JSON): See message payloads - https://beepboophq.com/docs/article/resourcer-api
         """
         self.keep_running = False
