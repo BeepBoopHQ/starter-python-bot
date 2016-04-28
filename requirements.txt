@@ -1,4 +1,4 @@
-beepboop==0.1.1
+beepboop==0.1.2
 docutils==0.12
 lockfile==0.12.2
 python-daemon==2.1.1
