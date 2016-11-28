@@ -38,7 +38,7 @@ class RtmEventHandler(object):
 
             msg_txt = event['text']
 
-            if self.clients.is_bot_mention(msg_txt):
+            if self.clients.is_bot_mention(msg_txt) or self._is_direct_message(event['channel']):
                 # e.g. user typed: "@pybot tell me a joke!"
                 if 'help' in msg_txt:
                     self.msg_writer.write_help_message(event['channel'])
@@ -52,3 +52,11 @@ class RtmEventHandler(object):
                     self.msg_writer.send_message(event['channel'], msg_txt)
                 else:
                     self.msg_writer.write_prompt(event['channel'])
+
+    def _is_direct_message(self, channel):
+        """Check if channel is a direct message channel
+
+        Args:
+            channel (str): Channel in which a message was received
+        """
+        return channel.startswith('D')
